@@ -3,18 +3,52 @@ import requests
 import pandas as pd
 import plotly.express as px
 
-banco_path = r"C:\Users\emill\Downloads\TRABALHO (1)\TRABALHO\SCRIPTS\banco.db"
+data = {
+    "produto": [
+        "Açucar Native Orgânico Dourado 1kg",
+        "Açucar Itaja 1KG Organico Demerara",
+        "Açúcar Native Orgânico Claro 1kg",
+        "Açucar Cristal Itaja 1kg Organico",
+        "Bebida De Aveia Nude Organico S/ Gluten 1L",
+        "Bebida De Aveia Nude Organico Baunilha 1L",
+        "Bebida De Aveia Nude Organico Integral 1L",
+        "Bebida De Aveia Nude Organico Cacau 1L",
+        "Achocolatado Orgânico Em Pó Instantâneo Native 400G",
+        "Chá Mate Poder da Terra Organico Limão 1L",
+        "Chá Mate Poder da Terra Organico Pessego 1L",
+        "Cereal Corn Flakes Native Organico 300g",
+        "Açucar Tia Sonia 400g Organico Demerara",
+        "Chá Mate Poder Da Terra Organico Tradicional 1L",
+        "Açucar Native 250g Organico Sache",
+        "Sorbet Orgânico Açaí Eco Fresh Pote 1,02kg",
+        "Vinho Chileno Rosé Meio Seco Orgânico Reserva Adobe Valle del Rapel Garrafa 750ml",
+        "Hortelã Orgânico Caisp",
+        "Espinafre Orgânico Caisp 180g",
+    ],
+    "precos": [
+        8.79, 6.48, 6.99, 5.99, 19.9, 19.9, 19.9, 19.9, 19.8,
+        9.9, 9.9, 16.98, 11.98, 9.9, 9.99, 42.98, 76.8, 0.0, 0.0,
+    ],
+    "agrup1": [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+}
+
+df = pd.DataFrame(data)
 
 from sqlalchemy import create_engine 
-engine = create_engine(f'sqlite:///{banco_path}', echo=True)
-
-df_lido = pd.read_sql('SELECT * FROM dados', con=engine)
+engine = create_engine('sqlite:///banco.db', echo=True)
 
 try:
-    with engine.connect() as conn:
-        print("Conexão com o banco estabelecida com sucesso!")
+    df.to_sql('dados', con=engine, if_exists='replace', index=False)
+    print("Tabela 'dados' criada e dados inseridos com sucesso!")
 except Exception as e:
-    print("Erro ao conectar com o banco:", e)
+    print("Erro ao criar a tabela no banco de dados:", e)
+
+try:
+    df_lido = pd.read_sql('SELECT * FROM dados', con=engine)
+    print("Dados lidos do banco com sucesso:")
+    print(df_lido)
+except Exception as e:
+    print("Erro ao ler os dados do banco:", e)
 
 
 st.write("Dados carregados do banco de dados", df_lido)
