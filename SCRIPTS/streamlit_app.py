@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 import plotly.express as px
 
-df = pd.read_csv('../DADOS TRATADOS/Dados_coletados.csv')
+df = pd.read_csv('../DADOS_TRATADOS/Dados_coletados.csv')
 
 from sqlalchemy import create_engine 
 engine = create_engine('sqlite:///banco.db', echo=True)
