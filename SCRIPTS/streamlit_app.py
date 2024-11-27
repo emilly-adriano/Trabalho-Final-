@@ -3,16 +3,16 @@ import requests
 import pandas as pd
 import plotly.express as px
 
-df = pd.read_csv('../DADOS_TRATADOS/Dados_coletados.csv')
+# df = pd.read_csv('../DADOS_TRATADOS/Dados_coletados.csv')
 
 from sqlalchemy import create_engine 
 engine = create_engine('sqlite:///banco.db', echo=True)
 
-try:
-    df.to_sql('dados', con=engine, if_exists='replace', index=False)
-    print("Tabela 'dados' criada e dados inseridos com sucesso!")
-except Exception as e:
-    print("Erro ao criar a tabela no banco de dados:", e)
+# try:
+#     df.to_sql('dados', con=engine, if_exists='replace', index=False)
+#     print("Tabela 'dados' criada e dados inseridos com sucesso!")
+# except Exception as e:
+#     print("Erro ao criar a tabela no banco de dados:", e)
 
 try:
     df_lido = pd.read_sql('SELECT * FROM dados', con=engine)
